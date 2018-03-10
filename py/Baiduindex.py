@@ -24,13 +24,14 @@ def openbrowser():
     # 打开谷歌浏览器
     # Firefox()
     # Chrome()
-    browser = webdriver.Chrome()
+    browser = webdriver.Chrome("D:\download\chromedriver_win32\chromedriver.exe")
     # 输入网址
     browser.get(url)
     # 打开浏览器时间
     # print("等待10秒打开浏览器...")
     # time.sleep(10)
 
+    browser.find_element_by_id("TANGRAM__PSP_3__footerULoginBtn").click()
     # 找到id="TANGRAM__PSP_3__userName"的对话框
     # 清空输入框
     browser.find_element_by_id("TANGRAM__PSP_3__userName").clear()
@@ -162,7 +163,8 @@ def getindex(keyword, day):
     # 常用js:http://www.cnblogs.com/hjhsysu/p/5735339.html
     # 搜索词：selenium JavaScript模拟鼠标悬浮
     x_0 = 1
-    y_0 = 0
+    y_0 = 1
+    small_off = -1
 
     if day == "all":
         day = 1000000
@@ -174,7 +176,8 @@ def getindex(keyword, day):
         # 只有移动位置xoyelement[2]是准确的
         for i in range(day):
             # 坐标偏移量???
-            ActionChains(browser).move_to_element_with_offset(xoyelement, x_0, y_0).perform()
+            ActionChains(browser).move_to_element_with_offset(xoyelement, x_0-small_off, y_0).perform()
+            time.sleep(0.5)
 
             # 构造规则
             if day == 7:
@@ -187,7 +190,8 @@ def getindex(keyword, day):
                 x_0 = x_0 + 6.78
             elif day == 1000000:
                 x_0 = x_0 + 3.37222222
-            time.sleep(2)
+            small_off = 1
+            y_0 = (y_0 + 150) % 300
             # <div class="imgtxt" style="margin-left:-117px;"></div>
             imgelement = browser.find_element_by_xpath('//div[@id="viewbox"]')
             # 找到图片坐标
